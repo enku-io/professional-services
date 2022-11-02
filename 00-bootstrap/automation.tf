@@ -17,7 +17,7 @@
 # tfdoc:file:description Automation project and resources.
 
 module "automation-project" {
-  source          = "../../../modules/project"
+  source          = "modules/project"
   billing_account = var.billing_account.id
   name            = "iac-core-0"
   parent = coalesce(
