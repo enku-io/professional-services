@@ -72,8 +72,8 @@ cd ../
 cd 01-resourcemanager
 
 # Link configuration files
-ln -s ../00-bootstrap/fast-config/tfvars/00-bootstrap.auto.tfvars.json .
 ln -s ../00-bootstrap/fast-config/tfvars/globals.auto.tfvars.json .
 ln -s ../00-bootstrap/fast-config/tfvars/00-bootstrap.auto.tfvars.json .
+ln -s ../00-bootstrap/fast-config/providers/01-resman-providers.tf .
 
 terraform init
