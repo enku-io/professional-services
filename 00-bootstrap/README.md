@@ -262,6 +262,7 @@ terraform init
 terraform apply \
   -var bootstrap_user=$(gcloud config list --format 'value(core.account)')
 ```
+> If you see an error related to project name already exists, please make sure the project name is unique or the project was not deleted recently
 
 Once the initial `apply` completes successfully, configure a remote backend using the new GCS bucket, and impersonation on the automation service account for this stage. To do this you can use the generated `providers.tf` file if you have configured output files as described above, or extract its contents from Terraform's output, then migrate state with `terraform init`:
 
@@ -433,7 +434,7 @@ The remaining configuration is manual, as it regards the repositories themselves
   - clone and populate them with the stage source
   - edit the modules source to match your modules repository
     - a simple way is using the "Replace in files" function of your editor
-      - search for `source\s*= "../../../modules/([^"]+)"`
+      - search for `source\s*= "../modules/([^"]+)"`
       - replace with `source = "git@github.com:my-org/fast-modules.git//$1?ref=v1.0"`
   - copy the generated workflow file for the stage from the GCS output files bucket or from the local clone if enabled
     - for GitHub, place it in a `.github/workflows` folder in the repository root

@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-output "default_rules" {
-  description = "Default rule resources."
-  value = {
-    admin = try(google_compute_firewall.allow-admins, null)
-    http  = try(google_compute_firewall.allow-tag-http, null)
-    https = try(google_compute_firewall.allow-tag-https, null)
-    ssh   = try(google_compute_firewall.allow-tag-ssh, null)
-  }
-}
+# tfdoc:file:description Optional instance group resources.
 
-output "rules" {
-  description = "Custom rule resources."
-  value       = google_compute_firewall.custom-rules
+resource "google_compute_instance_group" "unmanaged" {
+  for_each    = var.group_configs
+  project     = var.project_id
+  zone        = each.value.zone
+  name        = each.key
+  description = "Terraform-managed."
+  instances   = each.value.instances
+  dynamic "named_port" {
+    for_each = each.value.named_ports
+    content {
+      name = named_port.key
+      port = named_port.value
+    }
+  }
 }
