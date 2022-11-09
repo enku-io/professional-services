@@ -36,10 +36,10 @@ variable "custom_adv" {
   type        = map(string)
   default = {
     cloud_dns             = "35.199.192.0/19"
-    gcp_all               = "10.128.0.0/16"
-    gcp_dev               = "10.128.32.0/19"
-    gcp_landing           = "10.128.0.0/19"
-    gcp_prod              = "10.128.64.0/19"
+#    gcp_all               = "10.128.0.0/16"
+#    gcp_dev               = "10.128.32.0/19"
+#    gcp_landing           = "10.128.0.0/19"
+#    gcp_prod              = "10.128.64.0/19"
     googleapis_private    = "199.36.153.8/30"
     googleapis_restricted = "199.36.153.4/30"
     rfc_1918_10           = "10.0.0.0/8"

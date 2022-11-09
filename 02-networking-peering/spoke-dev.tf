@@ -34,7 +34,7 @@ module "dev-spoke-project" {
   shared_vpc_host_config = {
     enabled = true
   }
-  metric_scopes = [module.landing-project.project_id]
+  metric_scopes = [module.common-project.project_id]
   iam = {
     "roles/dns.admin" = compact([
       try(local.service_accounts.gke-dev, null),

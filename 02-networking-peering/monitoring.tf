@@ -27,6 +27,6 @@ locals {
 
 resource "google_monitoring_dashboard" "dashboard" {
   for_each       = local.dashboards
-  project        = module.landing-project.project_id
+  project        = module.common-project.project_id
   dashboard_json = file(each.value)
 }

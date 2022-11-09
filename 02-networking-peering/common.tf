@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-# tfdoc:file:description Landing VPC and related resources.
+# tfdoc:file:description Common VPC and related resources.
 
-module "landing-project" {
+module "common-project" {
   source          = "../modules/project"
   billing_account = var.billing_account.id
-  name            = "prod-net-landing-0"
+  name            = "prod-net-common-0"
   parent          = var.folder_ids.networking-prod
   prefix          = var.prefix
   services = [
@@ -42,10 +42,10 @@ module "landing-project" {
   }
 }
 
-module "landing-vpc" {
+module "common-vpc" {
   source     = "../modules/net-vpc"
-  project_id = module.landing-project.project_id
-  name       = "prod-landing-0"
+  project_id = module.common-project.project_id
+  name       = "prod-common-0"
   mtu        = 1500
   dns_policy = {
     inbound = true
@@ -63,29 +63,29 @@ module "landing-vpc" {
       next_hop      = "default-internet-gateway"
     }
   }
-  data_folder = "${var.data_dir}/subnets/landing"
+  data_folder = "${var.data_dir}/subnets/common"
 }
 
-module "landing-firewall" {
+module "common-firewall" {
   source     = "../modules/net-vpc-firewall"
-  project_id = module.landing-project.project_id
-  network    = module.landing-vpc.name
+  project_id = module.common-project.project_id
+  network    = module.common-vpc.name
   default_rules_config = {
     disabled = true
   }
   factories_config = {
     cidr_tpl_file = "${var.data_dir}/cidrs.yaml"
-    rules_folder  = "${var.data_dir}/firewall-rules/landing"
+    rules_folder  = "${var.data_dir}/firewall-rules/common"
   }
 }
 
-module "landing-nat-ew1" {
+module "common-nat-ew1" {
   source         = "../modules/net-cloudnat"
-  project_id     = module.landing-project.project_id
+  project_id     = module.common-project.project_id
   region         = "europe-west1"
   name           = "ew1"
   router_create  = true
   router_name    = "prod-nat-ew1"
-  router_network = module.landing-vpc.name
+  router_network = module.common-vpc.name
   router_asn     = 4200001024
 }

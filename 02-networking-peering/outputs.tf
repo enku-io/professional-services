@@ -17,16 +17,16 @@
 locals {
   host_project_ids = {
     dev-spoke-0  = module.dev-spoke-project.project_id
-    prod-landing = module.landing-project.project_id
+    prod-common = module.common-project.project_id
     prod-spoke-0 = module.prod-spoke-project.project_id
   }
   host_project_numbers = {
     dev-spoke-0  = module.dev-spoke-project.number
-    prod-landing = module.landing-project.number
+    prod-common = module.common-project.number
     prod-spoke-0 = module.prod-spoke-project.number
   }
   subnet_self_links = {
-    prod-landing = module.landing-vpc.subnet_self_links
+    prod-common = module.common-vpc.subnet_self_links
     dev-spoke-0  = module.dev-spoke-vpc.subnet_self_links
     prod-spoke-0 = module.prod-spoke-vpc.subnet_self_links
   }
@@ -37,7 +37,7 @@ locals {
     vpc_self_links       = local.vpc_self_links
   }
   vpc_self_links = {
-    prod-landing = module.landing-vpc.self_link
+    prod-common = module.common-vpc.self_link
     dev-spoke-0  = module.dev-spoke-vpc.self_link
     prod-spoke-0 = module.prod-spoke-vpc.self_link
   }
@@ -62,7 +62,7 @@ resource "google_storage_bucket_object" "tfvars" {
 
 output "cloud_dns_inbound_policy" {
   description = "IP Addresses for Cloud DNS inbound policy."
-  value       = [for s in module.landing-vpc.subnets : cidrhost(s.ip_cidr_range, 2)]
+  value       = [for s in module.common-vpc.subnets : cidrhost(s.ip_cidr_range, 2)]
 }
 
 output "host_project_ids" {
@@ -83,8 +83,8 @@ output "shared_vpc_self_links" {
 output "vpn_gateway_endpoints" {
   description = "External IP Addresses for the GCP VPN gateways."
   value = local.enable_onprem_vpn == false ? null : {
-    onprem-ew1 = {
-      for v in module.landing-to-onprem-ew1-vpn[0].gateway.vpn_interfaces :
+    onprem-usc1 = {
+      for v in module.common-to-onprem-usc1-vpn[0].gateway.vpn_interfaces :
       v.id => v.ip_address
     }
   }

@@ -18,7 +18,7 @@ module "peering-dev" {
   source        = "../modules/net-vpc-peering"
   prefix        = "dev-peering-0"
   local_network = module.dev-spoke-vpc.self_link
-  peer_network  = module.landing-vpc.self_link
+  peer_network  = module.common-vpc.self_link
   export_local_custom_routes = try(
     var.peering_configs.dev.export_local_custom_routes, null
   )
@@ -31,7 +31,7 @@ module "peering-prod" {
   source        = "../modules/net-vpc-peering"
   prefix        = "prod-peering-0"
   local_network = module.prod-spoke-vpc.self_link
-  peer_network  = module.landing-vpc.self_link
+  peer_network  = module.common-vpc.self_link
   depends_on    = [module.peering-dev]
   export_local_custom_routes = try(
     var.peering_configs.prod.export_local_custom_routes, null

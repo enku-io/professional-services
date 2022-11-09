@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-# tfdoc:file:description Landing DNS zones and peerings setup.
+# tfdoc:file:description common DNS zones and peerings setup.
 
 # forwarding to on-prem DNS resolvers
 
 module "onprem-example-dns-forwarding" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "forwarding"
   name            = "example-com"
   domain          = "onprem.example.com."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   forwarders      = { for ip in var.dns.onprem : ip => null }
 }
 
 module "reverse-10-dns-forwarding" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "forwarding"
   name            = "root-reverse-10"
   domain          = "10.in-addr.arpa."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   forwarders      = { for ip in var.dns.onprem : ip => null }
 }
 
 module "gcp-example-dns-private-zone" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "private"
   name            = "gcp-example-com"
   domain          = "gcp.example.com."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   recordsets = {
     "A localhost" = { records = ["127.0.0.1"] }
   }
@@ -54,11 +54,11 @@ module "gcp-example-dns-private-zone" {
 
 module "googleapis-private-zone" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "private"
   name            = "googleapis-com"
   domain          = "googleapis.com."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   recordsets = {
     "A private" = { records = [
       "199.36.153.8", "199.36.153.9", "199.36.153.10", "199.36.153.11"
@@ -72,11 +72,11 @@ module "googleapis-private-zone" {
 
 module "gcrio-private-zone" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "private"
   name            = "gcr-io"
   domain          = "gcr.io."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   recordsets = {
     "A gcr.io." = { ttl = 300, records = [
       "199.36.153.8", "199.36.153.9", "199.36.153.10", "199.36.153.11"
@@ -87,11 +87,11 @@ module "gcrio-private-zone" {
 
 module "packages-private-zone" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "private"
   name            = "packages-cloud"
   domain          = "packages.cloud.google.com."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   recordsets = {
     "A packages.cloud.google.com." = { ttl = 300, records = [
       "199.36.153.8", "199.36.153.9", "199.36.153.10", "199.36.153.11"
@@ -102,11 +102,11 @@ module "packages-private-zone" {
 
 module "pkgdev-private-zone" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "private"
   name            = "pkg-dev"
   domain          = "pkg.dev."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   recordsets = {
     "A pkg.dev." = { ttl = 300, records = [
       "199.36.153.8", "199.36.153.9", "199.36.153.10", "199.36.153.11"
@@ -117,11 +117,11 @@ module "pkgdev-private-zone" {
 
 module "pkigoog-private-zone" {
   source          = "../modules/dns"
-  project_id      = module.landing-project.project_id
+  project_id      = module.common-project.project_id
   type            = "private"
   name            = "pki-goog"
   domain          = "pki.goog."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   recordsets = {
     "A pki.goog." = { ttl = 300, records = [
       "199.36.153.8", "199.36.153.9", "199.36.153.10", "199.36.153.11"

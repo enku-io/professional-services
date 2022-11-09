@@ -24,22 +24,22 @@ module "prod-dns-private-zone" {
   type            = "private"
   name            = "prod-gcp-example-com"
   domain          = "prod.gcp.example.com."
-  client_networks = [module.landing-vpc.self_link]
+  client_networks = [module.common-vpc.self_link]
   recordsets = {
     "A localhost" = { records = ["127.0.0.1"] }
   }
 }
 
-# root zone peering to landing to centralize configuration; remove if unneeded
+# root zone peering to common to centralize configuration; remove if unneeded
 
-module "prod-landing-root-dns-peering" {
+module "prod-common-root-dns-peering" {
   source          = "../modules/dns"
   project_id      = module.prod-spoke-project.project_id
   type            = "peering"
   name            = "prod-root-dns-peering"
   domain          = "."
   client_networks = [module.prod-spoke-vpc.self_link]
-  peer_network    = module.landing-vpc.self_link
+  peer_network    = module.common-vpc.self_link
 }
 
 module "prod-reverse-10-dns-peering" {
@@ -49,5 +49,5 @@ module "prod-reverse-10-dns-peering" {
   name            = "prod-reverse-10-dns-peering"
   domain          = "10.in-addr.arpa."
   client_networks = [module.prod-spoke-vpc.self_link]
-  peer_network    = module.landing-vpc.self_link
+  peer_network    = module.common-vpc.self_link
 }
