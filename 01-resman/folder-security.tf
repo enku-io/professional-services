@@ -16,10 +16,10 @@
 
 # tfdoc:file:description Security stage resources.
 
-module "branch-security-folder" {
+module "folder-security" {
   source = "../modules/folder"
-  parent = "organizations/${var.organization.id}"
-  name   = "Security"
+  parent = module.folder-core.id
+  name   = "security"
   group_iam = {
     (local.groups.gcp-security-admins) = [
       # add any needed roles for resources/services not managed via Terraform,

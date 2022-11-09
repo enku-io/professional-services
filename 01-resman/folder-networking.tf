@@ -16,10 +16,10 @@
 
 # tfdoc:file:description Networking stage resources.
 
-module "branch-network-folder" {
+module "folder-network" {
   source = "../modules/folder"
-  parent = "organizations/${var.organization.id}"
-  name   = "Networking"
+  parent = module.folder-core.id
+  name   = "networking"
   group_iam = {
     (local.groups.gcp-network-admins) = [
       # add any needed roles for resources/services not managed via Terraform,
@@ -45,14 +45,14 @@ module "branch-network-folder" {
   }
 }
 
-module "branch-network-prod-folder" {
+module "folder-network-prod" {
   source = "../modules/folder"
-  parent = module.branch-network-folder.id
-  name   = "Production"
+  parent = module.folder-network.id
+  name   = "prod"
   iam = {
     (local.custom_roles.service_project_network_admin) = concat(
       local.branch_optional_sa_lists.dp-prod,
-      local.branch_optional_sa_lists.gke-prod,
+      #local.branch_optional_sa_lists.gke-prod,
       local.branch_optional_sa_lists.pf-prod,
     )
   }
@@ -64,14 +64,14 @@ module "branch-network-prod-folder" {
   }
 }
 
-module "branch-network-dev-folder" {
+module "folder-network-dev" {
   source = "../modules/folder"
-  parent = module.branch-network-folder.id
-  name   = "Development"
+  parent = module.folder-network.id
+  name   = "dev"
   iam = {
     (local.custom_roles.service_project_network_admin) = concat(
       local.branch_optional_sa_lists.dp-dev,
-      local.branch_optional_sa_lists.gke-dev,
+      #local.branch_optional_sa_lists.gke-dev,
       local.branch_optional_sa_lists.pf-dev,
     )
   }

@@ -29,8 +29,8 @@ locals {
   branch_optional_sa_lists = {
     dp-dev   = compact([try(module.branch-dp-dev-sa.0.iam_email, "")])
     dp-prod  = compact([try(module.branch-dp-prod-sa.0.iam_email, "")])
-    gke-dev  = compact([try(module.branch-gke-dev-sa.0.iam_email, "")])
-    gke-prod = compact([try(module.branch-gke-prod-sa.0.iam_email, "")])
+    #gke-dev  = compact([try(module.branch-gke-dev-sa.0.iam_email, "")])
+    #gke-prod = compact([try(module.branch-gke-prod-sa.0.iam_email, "")])
     pf-dev   = compact([try(module.branch-pf-dev-sa.0.iam_email, "")])
     pf-prod  = compact([try(module.branch-pf-prod-sa.0.iam_email, "")])
   }
