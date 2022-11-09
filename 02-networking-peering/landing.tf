@@ -17,7 +17,7 @@
 # tfdoc:file:description Landing VPC and related resources.
 
 module "landing-project" {
-  source          = "../../../modules/project"
+  source          = "../modules/project"
   billing_account = var.billing_account.id
   name            = "prod-net-landing-0"
   parent          = var.folder_ids.networking-prod
@@ -43,7 +43,7 @@ module "landing-project" {
 }
 
 module "landing-vpc" {
-  source     = "../../../modules/net-vpc"
+  source     = "../modules/net-vpc"
   project_id = module.landing-project.project_id
   name       = "prod-landing-0"
   mtu        = 1500
@@ -67,7 +67,7 @@ module "landing-vpc" {
 }
 
 module "landing-firewall" {
-  source     = "../../../modules/net-vpc-firewall"
+  source     = "../modules/net-vpc-firewall"
   project_id = module.landing-project.project_id
   network    = module.landing-vpc.name
   default_rules_config = {
@@ -80,7 +80,7 @@ module "landing-firewall" {
 }
 
 module "landing-nat-ew1" {
-  source         = "../../../modules/net-cloudnat"
+  source         = "../modules/net-cloudnat"
   project_id     = module.landing-project.project_id
   region         = "europe-west1"
   name           = "ew1"

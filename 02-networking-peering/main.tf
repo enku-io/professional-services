@@ -40,7 +40,7 @@ locals {
 }
 
 module "folder" {
-  source        = "../../../modules/folder"
+  source        = "../modules/folder"
   parent        = "organizations/${var.organization.id}"
   name          = "Networking"
   folder_create = var.folder_ids.networking == null

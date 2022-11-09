@@ -17,7 +17,7 @@
 # tfdoc:file:description Dev spoke VPC and related resources.
 
 module "dev-spoke-project" {
-  source          = "../../../modules/project"
+  source          = "../modules/project"
   billing_account = var.billing_account.id
   name            = "dev-net-spoke-0"
   parent          = var.folder_ids.networking-dev
@@ -44,7 +44,7 @@ module "dev-spoke-project" {
 }
 
 module "dev-spoke-vpc" {
-  source             = "../../../modules/net-vpc"
+  source             = "../modules/net-vpc"
   project_id         = module.dev-spoke-project.project_id
   name               = "dev-spoke-0"
   mtu                = 1500
@@ -67,7 +67,7 @@ module "dev-spoke-vpc" {
 }
 
 module "dev-spoke-firewall" {
-  source     = "../../../modules/net-vpc-firewall"
+  source     = "../modules/net-vpc-firewall"
   project_id = module.dev-spoke-project.project_id
   network    = module.dev-spoke-vpc.name
   default_rules_config = {
@@ -81,7 +81,7 @@ module "dev-spoke-firewall" {
 
 module "dev-spoke-cloudnat" {
   for_each       = toset(values(module.dev-spoke-vpc.subnet_regions))
-  source         = "../../../modules/net-cloudnat"
+  source         = "../modules/net-cloudnat"
   project_id     = module.dev-spoke-project.project_id
   region         = each.value
   name           = "dev-nat-${var.region_trigram[each.value]}"

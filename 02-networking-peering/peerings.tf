@@ -15,7 +15,7 @@
  */
 
 module "peering-dev" {
-  source        = "../../../modules/net-vpc-peering"
+  source        = "../modules/net-vpc-peering"
   prefix        = "dev-peering-0"
   local_network = module.dev-spoke-vpc.self_link
   peer_network  = module.landing-vpc.self_link
@@ -28,7 +28,7 @@ module "peering-dev" {
 }
 
 module "peering-prod" {
-  source        = "../../../modules/net-vpc-peering"
+  source        = "../modules/net-vpc-peering"
   prefix        = "prod-peering-0"
   local_network = module.prod-spoke-vpc.self_link
   peer_network  = module.landing-vpc.self_link
