@@ -24,7 +24,7 @@ locals {
 }
 
 module "dev-sec-project" {
-  source          = "../../../modules/project"
+  source          = "../modules/project"
   name            = "dev-sec-core-0"
   parent          = var.folder_ids.security
   prefix          = var.prefix
@@ -38,7 +38,7 @@ module "dev-sec-project" {
 
 module "dev-sec-kms" {
   for_each   = toset(local.kms_locations)
-  source     = "../../../modules/kms"
+  source     = "../modules/kms"
   project_id = module.dev-sec-project.project_id
   keyring = {
     location = each.key

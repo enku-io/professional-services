@@ -130,7 +130,7 @@ locals {
 }
 
 module "vpc-sc" {
-  source = "../../../modules/vpc-sc"
+  source = "../modules/vpc-sc"
   # only enable if we have projects defined for perimeters
   count         = anytrue([for k, v in local.vpc_sc_counts : v > 0]) ? 1 : 0
   access_policy = null
