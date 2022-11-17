@@ -20,4 +20,11 @@ resource "google_vertex_ai_metadata_store" "store" {
   region        = var.region
   project       = var.project_id
   provider      = google-beta
+
+  dynamic "encryption_spec" {
+    for_each = var.kms_key == null ? [] : [""]
+    content {
+      kms_key_name = var.kms_key
+    }
+  }
 }
