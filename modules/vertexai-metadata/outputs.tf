@@ -16,5 +16,5 @@
 
 output "id" {
   description = "Metadata Id"
-  value       = google_vertex_ai_metadata_store.store
+  value       = google_vertex_ai_metadata_store.store.id
 }
