@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # These variables should be set in landingzone.conf
-GCP_ORG_DOMAIN=""
-GCP_BILLING_ID=""
-GCP_PROJ_PREFIX=""
+GCP_ORG_DOMAIN=''
+GCP_BILLING_ID=''
+GCP_PROJ_PREFIX=''
+FAST_CONFIG_DIR=''
 source ./landingzone.conf
 
 # set variable for current logged in user
@@ -72,8 +73,71 @@ cd ../
 cd 01-resourcemanager
 
 # Link configuration files
-ln -s ../00-bootstrap/fast-config/tfvars/globals.auto.tfvars.json .
-ln -s ../00-bootstrap/fast-config/tfvars/00-bootstrap.auto.tfvars.json .
-ln -s ../00-bootstrap/fast-config/providers/01-resman-providers.tf .
+ln -s ../fast-config/tfvars/globals.auto.tfvars.json .
+ln -s ../fast-config/tfvars/00-bootstrap.auto.tfvars.json .
+ln -s ../fast-config/providers/01-resman-providers.tf .
 
+
+# IF not current...
+#gcloud auth application-default login
 terraform init
+terraform apply
+
+# Setup for next networking stage
+terraform output -json providers | jq -r '.["02-networking"]' > ../02-networking-peering/providers.tf
+terraform output -json providers | jq -r '.["02-security"]' > ../02-security/providers.tf
+
+cd ../
+
+#########
+# Stage 2 - Networking
+cd 02-networking
+
+# Don't need this, did the tf output ... above
+# ln -s ../fast-config/providers/02-networking-providers.tf .
+
+ln -s ../fast-config/tfvars/globals.auto.tfvars.json .
+ln -s ../fast-config/tfvars/00-bootstrap.auto.tfvars.json .
+ln -s ../fast-config/tfvars/01-resman.auto.tfvars.json .
+
+
+# IF not current...
+#gcloud auth application-default login
+terraform init
+terraform apply
+cd ../
+
+#########
+# Stage 2 - Security
+cd 02-security
+
+# Don't need this, did the tf output ... above
+# ln -s ../fast-config/providers/02-networking-providers.tf .
+
+ln -s ../fast-config/tfvars/00-bootstrap.auto.tfvars.json .
+ln -s ../fast-config/tfvars/01-resman.auto.tfvars.json .
+# also copy the tfvars file used for the bootstrap stage
+cp ../00-bootstrap/terraform.tfvars .
+
+# IF not current...
+#gcloud auth application-default login
+terraform init
+terraform apply
+cd ../
+
+#########
+# Stage 3 - Project Factory
+cd 03-projectfactory/dev
+
+rm -f 00-bootstrap.auto.tfvars.json  01-resman.auto.tfvars.json  02-networking.auto.tfvars.json  03-project-factory-dev-providers.tf  globals.auto.tfvars.json 
+ln -s ../../fast-config/tfvars/00-bootstrap.auto.tfvars.json .
+ln -s ../../fast-config/tfvars/01-resman.auto.tfvars.json .
+ln -s ../../fast-config/tfvars/02-networking.auto.tfvars.json .
+ln -s ../../fast-config/providers/03-project-factory-dev-providers.tf .
+ln -s ../../fast-config/tfvars/globals.auto.tfvars.json .
+
+# IF not current...
+#gcloud auth application-default login
+terraform init
+terraform apply
+cd ../

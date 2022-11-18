@@ -21,11 +21,11 @@ moved {
   to   = module.branch-sandbox-folder.0
 }
 
-module "branch-sandbox-folder" {
+module "folder-sandbox" {
   source = "../modules/folder"
   count  = var.fast_features.sandbox ? 1 : 0
   parent = "organizations/${var.organization.id}"
-  name   = "Sandbox"
+  name   = "sandbox"
   iam = {
     "roles/logging.admin"                  = [module.branch-sandbox-sa.0.iam_email]
     "roles/owner"                          = [module.branch-sandbox-sa.0.iam_email]
