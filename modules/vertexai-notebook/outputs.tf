@@ -15,6 +15,6 @@
  */
 
 output "id" {
-  description = "Metadata Id"
-  value       = google_vertex_ai_metadata_store.store
+  description = "Instance Id"
+  value       = google_notebooks_instance.instance.id
 }

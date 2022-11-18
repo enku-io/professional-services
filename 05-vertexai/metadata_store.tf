@@ -1,3 +1,3 @@
-module "vertex-metadata" {
-  source     = "../modules/vertex-metadata"
+module "vertexai-metadata" {
+  source     = "../modules/vertexai-metadata"
 }

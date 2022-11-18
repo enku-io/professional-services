@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-resource "google_vertex_ai_metadata_store" "store" {
-  name          = var.name
-  description   = var.description
-  region        = var.region
-  project       = var.project_id
-  provider      = google-beta
+output "id" {
+  description = "Metadata Id"
+  value       = google_vertex_ai_metadata_store.store.id
 }
