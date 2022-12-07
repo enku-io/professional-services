@@ -31,4 +31,4 @@ fast-config/
 03-project-factory/prod/02-networking.auto.tfvars.json
 03-project-factory/prod/03-project-factory-dev-providers.tf
 03-project-factory/prod/globals.auto.tfvars.json
-
+05-vertexai/provider.tf
