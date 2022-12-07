@@ -20,10 +20,10 @@ module "folder-dev" {
   parent = "organizations/${var.organization.id}"
   name   = "dev"
   iam = {
-    "roles/logging.admin"                  = [module.branch-sandbox-sa.0.iam_email]
-    "roles/owner"                          = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.folderAdmin"    = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.projectCreator" = [module.branch-sandbox-sa.0.iam_email]
+    "roles/logging.admin"                  = [module.branch-pf-dev-sa.0.iam_email]
+    "roles/owner"                          = [module.branch-pf-dev-sa.0.iam_email]
+    "roles/resourcemanager.folderAdmin"    = [module.branch-pf-dev-sa.0.iam_email]
+    "roles/resourcemanager.projectCreator" = [module.branch-pf-dev-sa.0.iam_email]
   }
   org_policies = {
     "constraints/sql.restrictPublicIp"       = { enforce = false }
@@ -31,7 +31,7 @@ module "folder-dev" {
   }
   tag_bindings = {
     context = try(
-      module.organization.tag_values["${var.tag_names.context}/sandbox"].id, null
+      module.organization.tag_values["${var.tag_names.context}/dev"].id, {}
     )
   }
 }
@@ -41,10 +41,10 @@ module "folder-dev-sharedinfra" {
   parent = module.folder-dev.id
   name   = "sharedinfra"
   iam = {
-    "roles/logging.admin"                  = [module.branch-sandbox-sa.0.iam_email]
-    "roles/owner"                          = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.folderAdmin"    = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.projectCreator" = [module.branch-sandbox-sa.0.iam_email]
+    "roles/logging.admin"                  = [module.branch-pf-dev-sa.0.iam_email]
+    "roles/owner"                          = [module.branch-pf-dev-sa.0.iam_email]
+    "roles/resourcemanager.folderAdmin"    = [module.branch-pf-dev-sa.0.iam_email]
+    "roles/resourcemanager.projectCreator" = [module.branch-pf-dev-sa.0.iam_email]
   }
   org_policies = {
     "constraints/sql.restrictPublicIp"       = { enforce = false }
@@ -52,7 +52,7 @@ module "folder-dev-sharedinfra" {
   }
   tag_bindings = {
     context = try(
-      module.organization.tag_values["${var.tag_names.context}/sandbox"].id, null
+      module.organization.tag_values["${var.tag_names.context}/dev"].id, null
     )
   }
 }

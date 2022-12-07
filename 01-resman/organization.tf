@@ -96,6 +96,8 @@ module "organization" {
         sandbox    = null
         security   = null
         teams      = null
+        dev        = null
+        prod       = null
       }
     }
     (var.tag_names.environment) = {

@@ -20,10 +20,10 @@ module "folder-prod" {
   parent = "organizations/${var.organization.id}"
   name   = "prod"
   iam = {
-    "roles/logging.admin"                  = [module.branch-sandbox-sa.0.iam_email]
-    "roles/owner"                          = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.folderAdmin"    = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.projectCreator" = [module.branch-sandbox-sa.0.iam_email]
+    "roles/logging.admin"                  = [module.branch-env-prod-sa.iam_email]
+    "roles/owner"                          = [module.branch-env-prod-sa.iam_email]
+    "roles/resourcemanager.folderAdmin"    = [module.branch-env-prod-sa.iam_email]
+    "roles/resourcemanager.projectCreator" = [module.branch-env-prod-sa.iam_email]
   }
   org_policies = {
     "constraints/sql.restrictPublicIp"       = { enforce = false }
@@ -31,7 +31,7 @@ module "folder-prod" {
   }
   tag_bindings = {
     context = try(
-      module.organization.tag_values["${var.tag_names.context}/sandbox"].id, null
+      module.organization.tag_values["${var.tag_names.context}/prod"].id, null
     )
   }
 }
@@ -41,10 +41,10 @@ module "folder-prod-sharedinfra" {
   parent = module.folder-prod.id
   name   = "sharedinfra"
   iam = {
-    "roles/logging.admin"                  = [module.branch-sandbox-sa.0.iam_email]
-    "roles/owner"                          = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.folderAdmin"    = [module.branch-sandbox-sa.0.iam_email]
-    "roles/resourcemanager.projectCreator" = [module.branch-sandbox-sa.0.iam_email]
+    "roles/logging.admin"                  = [module.branch-env-prod-sa.iam_email]
+    "roles/owner"                          = [module.branch-env-prod-sa.iam_email]
+    "roles/resourcemanager.folderAdmin"    = [module.branch-env-prod-sa.iam_email]
+    "roles/resourcemanager.projectCreator" = [module.branch-env-prod-sa.iam_email]
   }
   org_policies = {
     "constraints/sql.restrictPublicIp"       = { enforce = false }
@@ -52,10 +52,23 @@ module "folder-prod-sharedinfra" {
   }
   tag_bindings = {
     context = try(
-      module.organization.tag_values["${var.tag_names.context}/sandbox"].id, null
+      module.organization.tag_values["${var.tag_names.context}/prod"].id, null
     )
   }
 }
+
+module "branch-env-prod-sa" {
+  source       = "../modules/iam-service-account"
+  #count        = var.fast_features.teams ? 1 : 0
+  project_id   = var.automation.project_id
+  name         = "prod-resman-env-prod-0"
+  display_name = "Terraform resman prod environment service account."
+  prefix       = var.prefix
+  iam_storage_roles = {
+    (var.automation.outputs_bucket) = ["roles/storage.admin"]
+  }
+}
+
 
 #module "branch-sandbox-gcs" {
 #  source        = "../modules/gcs"

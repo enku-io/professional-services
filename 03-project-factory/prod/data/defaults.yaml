@@ -12,11 +12,11 @@ billing_alert:
 
 # [opt] Contacts for billing alerts and important notifications
 essential_contacts: []
-#  ["team-contacts@example.com"]
+  # ["team-contacts@example.com"]
 
 # [opt] Labels set for all projects
 labels:
-  environment: dev
+  environment: prod
 #  department: accounting
 #  application: example-app
 #  foo: bar
@@ -24,4 +24,4 @@ labels:
 # [opt] Additional notification channels for billing
 notification_channels: []
 
-environment_dns_zone: ''
+environment_dns_zone: []

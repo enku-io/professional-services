@@ -26,3 +26,9 @@ fast-config/
 03-project-factory/dev/02-networking.auto.tfvars.json
 03-project-factory/dev/03-project-factory-dev-providers.tf
 03-project-factory/dev/globals.auto.tfvars.json
+03-project-factory/prod/00-bootstrap.auto.tfvars.json
+03-project-factory/prod/01-resman.auto.tfvars.json
+03-project-factory/prod/02-networking.auto.tfvars.json
+03-project-factory/prod/03-project-factory-dev-providers.tf
+03-project-factory/prod/globals.auto.tfvars.json
+

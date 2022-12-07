@@ -81,6 +81,8 @@ locals {
       networking-prod    = module.folder-network-prod.id
       sandbox            = try(module.folder-sandbox.0.id, null)
       security           = module.folder-security.id
+      dev                = try(module.folder-dev.id, null)
+      prod               = try(module.folder-prod.id, null)
       teams              = try(module.branch-teams-folder.0.id, null)
     },
     {

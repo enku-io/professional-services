@@ -1,0 +1,16 @@
+VertexAI Foundations
+====================
+
+
+Quickstart Guide
+================
+
+First run:
+1. Source the config file: . ./landingzone.conf
+2. Run setuplandingzone.sh
+
+Subseqent runs:
+1. Source the config file:
+2. Login using gcloud auth loging and application default login
+3. Run Terraform
+

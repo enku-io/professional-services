@@ -39,6 +39,8 @@ gcloud beta billing accounts add-iam-policy-binding $FAST_BILLING_ACCOUNT_ID \
 # gcp-network-admins
 # gcp-organization-admins
 # gcp-security-admins
+# devgroup1
+# prodgroup1
 
 # TODO
 # Add $FAST_BU (i.e. current user logged in and running this) to the gcp-organization-admins@ Group
@@ -126,8 +128,9 @@ terraform apply
 cd ../
 
 #########
-# Stage 3 - Project Factory
-cd 03-projectfactory/dev
+# Stage 3.1 - Project Factory for Dev env
+cd 03-project-factory/dev
+
 
 rm -f 00-bootstrap.auto.tfvars.json  01-resman.auto.tfvars.json  02-networking.auto.tfvars.json  03-project-factory-dev-providers.tf  globals.auto.tfvars.json 
 ln -s ../../fast-config/tfvars/00-bootstrap.auto.tfvars.json .
@@ -136,8 +139,49 @@ ln -s ../../fast-config/tfvars/02-networking.auto.tfvars.json .
 ln -s ../../fast-config/providers/03-project-factory-dev-providers.tf .
 ln -s ../../fast-config/tfvars/globals.auto.tfvars.json .
 
+echo "Getting folder info for VertexAI projects..."
+DEV_FOLDER_ID=$(cat fast-config/tfvars/01-resman.auto.tfvars.json | jq '.folder_ids.dev')
+PROD_FOLDER_ID=$(cat fast-config/tfvars/01-resman.auto.tfvars.json | jq '.folder_ids.prod')
+sed -i '' s^%DEV_FOLDER_ID%^$DEV_FOLDER_ID^g 03-project-factory/dev/data/projects/vertexai1.yaml
+sed -i '' s^%PROD_FOLDER_ID%^$PROD_FOLDER_ID^g 03-project-factory/dev/data/projects/vertexai1.yaml
+
+
+echo "Configuring $VERTEXAI_DEV_GROUP for VertexAI dev project..."
+sed -i '' s^%VERTEXAI_DEV_GROUP%^$VERTEXAI_DEV_GROUP^g 03-project-factory/dev/data/projects/vertexai1.yaml
+echo "Configuring $VERTEXAI_PROD_GROUP for VertexAI prod project..."
+sed -i '' s^%VERTEXAI_PROD_GROUP%^$VERTEXAI_PROD_GROUP^g 03-project-factory/prod/data/projects/vertexai1.yaml
+
 # IF not current...
 #gcloud auth application-default login
 terraform init
 terraform apply
 cd ../
+
+#########
+# Stage 4.1 - Project Factory for Prod env
+cd 03-project-factory/prod
+
+rm -f 00-bootstrap.auto.tfvars.json  01-resman.auto.tfvars.json  02-networking.auto.tfvars.json  03-project-factory-prod-providers.tf  globals.auto.tfvars.json 
+ln -s ../../fast-config/tfvars/00-bootstrap.auto.tfvars.json .
+ln -s ../../fast-config/tfvars/01-resman.auto.tfvars.json .
+ln -s ../../fast-config/tfvars/02-networking.auto.tfvars.json .
+ln -s ../../fast-config/providers/03-project-factory-prod-providers.tf .
+ln -s ../../fast-config/tfvars/globals.auto.tfvars.json .
+
+echo "Getting folder info for VertexAI projects..."
+DEV_FOLDER_ID=$(cat fast-config/tfvars/01-resman.auto.tfvars.json | jq '.folder_ids.dev')
+PROD_FOLDER_ID=$(cat fast-config/tfvars/01-resman.auto.tfvars.json | jq '.folder_ids.prod')
+sed -i '' s^%DEV_FOLDER_ID%^$DEV_FOLDER_ID^g 03-project-factory/dev/data/projects/vertexai1.yaml
+sed -i '' s^%PROD_FOLDER_ID%^$PROD_FOLDER_ID^g 03-project-factory/dev/data/projects/vertexai1.yaml
+
+echo "Configuring $VERTEXAI_DEV_GROUP for VertexAI dev project..."
+sed -i '' s^%VERTEXAI_DEV_GROUP%^$VERTEXAI_DEV_GROUP^g 03-project-factory/dev/data/projects/vertexai1.yaml
+echo "Configuring $VERTEXAI_PROD_GROUP for VertexAI prod project..."
+sed -i '' s^%VERTEXAI_PROD_GROUP%^$VERTEXAI_PROD_GROUP^g 03-project-factory/prod/data/projects/vertexai1.yaml
+
+# IF not current...
+#gcloud auth application-default login
+terraform init
+terraform apply
+cd ../
+
